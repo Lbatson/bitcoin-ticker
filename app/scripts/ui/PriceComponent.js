@@ -5,7 +5,8 @@
 
     var PriceComponent = React.createClass({
         propTypes: {
-            price: React.PropTypes.number
+            price: React.PropTypes.number,
+            reset: React.PropTypes.bool
         },
         getInitialState: function () {
             return {
@@ -14,16 +15,20 @@
             };
         },
         componentWillReceiveProps: function (nextProps) {
-            if (this.state.price !== null) {
-                var color = 'black';
+            var color = 'black';
+            if (this.state.price !== null && !nextProps.reset) {
                 if (nextProps.price > this.state.price) {
                     color = 'green';
                 } else if (nextProps.price < this.state.price) {
                     color = 'red';
                 }
-                this.state.style = {color: color};
             }
-            this.setState({price: nextProps.price});
+            this.setState({
+                price: nextProps.price,
+                style: {
+                    color: color
+                }
+            });
         },
         render: function () {
             return (

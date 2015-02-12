@@ -22,7 +22,8 @@
         getInitialState: function () {
             return {
                 datetime: new Moment().format('MM/D/YYYY'),
-                price: null
+                price: null,
+                reset: true
             };
         },
         loadPrice: function (currency) {
@@ -31,18 +32,18 @@
                 dataType: 'json'
             })
             .done(function (data) {
-                this.setState({price: data});
+                this.setState({
+                    currency: currency || this.state.currency,
+                    price: data,
+                    reset: !!currency || false
+                });
             }.bind(this))
             .fail(function (jqXHR, status, err) {
                 console.log(status, err);
             });
         },
-        refreshPriceWithCurrency: function (val) {
-            this.setState({currency: val});
-            this.loadPrice(val);
-        },
         componentDidMount: function () {
-            this.refreshPriceWithCurrency(this.props.currency);
+            this.loadPrice(this.props.currency);
             this.updateInterval = setInterval(this.loadPrice, this.props.updateInterval);
         },
         componentWillUnmount: function () {
@@ -51,14 +52,17 @@
         render: function () {
             return (
                 <div>
-                    <h3>Bitcoin Ticker</h3>
+                    <h3> Bitcoin Ticker</h3>
                     <h5>{this.state.datetime}</h5>
-                    <div>
-                        Current Price:&nbsp;
-                        <CurrencySymbolComponent currency={this.state.currency} />&nbsp;
-                        <PriceComponent price={this.state.price} />
-                        <br/>
-                        <CurrencySelectionComponent value={this.state.currency} callback={this.refreshPriceWithCurrency}/>
+                    <div className='row'>
+                        <div className='col-xs-3'>
+                            Current Price:&nbsp;
+                            <CurrencySymbolComponent currency={this.state.currency} />&nbsp;
+                            <PriceComponent price={this.state.price} reset={this.state.reset}/>
+                        </div>
+                        <div className='col-xs-2'>
+                            <CurrencySelectionComponent value={this.state.currency} onSelection={this.loadPrice}/>
+                        </div>
                     </div>
                 </div>
             );
