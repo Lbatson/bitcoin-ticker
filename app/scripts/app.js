@@ -5,6 +5,7 @@
         Moment = require('moment'),
         CurrencySymbolComponent = require('./ui/CurrencySymbolComponent'),
         PriceComponent = require('./ui/PriceComponent'),
+        CurrencySelectionComponent = require('./ui/CurrencySelectionComponent'),
         mountNode = document.getElementById('app');
 
     var BitcoinTicker = React.createClass({
@@ -24,28 +25,24 @@
                 price: null
             };
         },
-        loadPrice: function () {
+        loadPrice: function (currency) {
             $.ajax({
-                url: 'https://api.bitcoinaverage.com/ticker/' + this.props.currency + '/last',
-                dataType: 'json',
-                success: function (data) {
-                    this.setState({
-                        currency: this.props.currency,
-                        price: data
-                    });
-                }.bind(this),
-                fail: function (err) {
-                    console.log(err);
-                }
+                url: 'https://api.bitcoinaverage.com/ticker/' + (currency || this.state.currency) + '/last',
+                dataType: 'json'
+            })
+            .done(function (data) {
+                this.setState({price: data});
+            }.bind(this))
+            .fail(function (jqXHR, status, err) {
+                console.log(status, err);
             });
         },
-        componentWillReceiveProps: function (nextProps) {
-            this.setState({
-                currency: nextProps.currency
-            });
+        refreshPriceWithCurrency: function (val) {
+            this.setState({currency: val});
+            this.loadPrice(val);
         },
         componentDidMount: function () {
-            this.loadPrice();
+            this.refreshPriceWithCurrency(this.props.currency);
             this.updateInterval = setInterval(this.loadPrice, this.props.updateInterval);
         },
         componentWillUnmount: function () {
@@ -59,7 +56,9 @@
                     <div>
                         Current Price:&nbsp;
                         <CurrencySymbolComponent currency={this.state.currency} />&nbsp;
-                        <PriceComponent price={this.state.price} />&nbsp;
+                        <PriceComponent price={this.state.price} />
+                        <br/>
+                        <CurrencySelectionComponent value={this.state.currency} callback={this.refreshPriceWithCurrency}/>
                     </div>
                 </div>
             );
