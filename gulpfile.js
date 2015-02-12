@@ -1,21 +1,15 @@
 'use strict';
 
-var gulp = require('gulp');
-var del = require('del');
-
-
-
+var gulp = require('gulp'),
+    del = require('del');
 // Load plugins
-var $ = require('gulp-load-plugins')();
-var browserify = require('browserify');
-var watchify = require('watchify');
-var source = require('vinyl-source-stream'),
-    
+var $ = require('gulp-load-plugins')(),
+    browserify = require('browserify'),
+    watchify = require('watchify'),
+    source = require('vinyl-source-stream'),
     sourceFile = './app/scripts/app.js',
-    
     destFolder = './dist/scripts',
     destFileName = 'app.js';
-
 
 // Styles
 gulp.task('styles', function () {
@@ -29,7 +23,6 @@ gulp.task('styles', function () {
         .pipe(gulp.dest('dist/styles'))
         .pipe($.size());
 });
-
 
 // Scripts
 gulp.task('scripts', function () {
@@ -52,12 +45,7 @@ gulp.task('scripts', function () {
     }
 
     return rebundle();
-
 });
-
-
-
-
 
 // HTML
 gulp.task('html', function () {
@@ -79,21 +67,18 @@ gulp.task('images', function () {
         .pipe($.size());
 });
 
-
-
 // Clean
 gulp.task('clean', function (cb) {
     cb(del.sync(['dist/styles', 'dist/scripts', 'dist/images']));
 });
 
-
 // Bundle
-gulp.task('bundle', ['styles', 'scripts', 'bower'], function(){
+gulp.task('bundle', ['styles', 'scripts', 'bower'], function () {
     return gulp.src('./app/*.html')
-               .pipe($.useref.assets())
-               .pipe($.useref.restore())
-               .pipe($.useref())
-               .pipe(gulp.dest('dist'));
+        .pipe($.useref.assets().on('error', $.util.log))
+        .pipe($.useref.restore())
+        .pipe($.useref())
+        .pipe(gulp.dest('dist'));
 });
 
 // Webserver
@@ -106,13 +91,13 @@ gulp.task('serve', function () {
 });
 
 // Bower helper
-gulp.task('bower', function() {
+gulp.task('bower', function () {
     gulp.src('app/bower_components/**/*.js', {base: 'app/bower_components'})
         .pipe(gulp.dest('dist/bower_components/'));
 
 });
 
-gulp.task('json', function() {
+gulp.task('json', function () {
     gulp.src('app/scripts/json/**/*.json', {base: 'app/scripts'})
         .pipe(gulp.dest('dist/scripts/'));
 });
@@ -126,19 +111,14 @@ gulp.task('extras', function () {
 
 // Watch
 gulp.task('watch', ['html', 'bundle', 'serve'], function () {
-
     // Watch .json files
     gulp.watch('app/scripts/**/*.json', ['json']);
 
     // Watch .html files
     gulp.watch('app/*.html', ['html']);
 
-    
     // Watch .scss files
     gulp.watch('app/styles/**/*.scss', ['styles']);
-    
-
-
 
     // Watch image files
     gulp.watch('app/images/**/*', ['images']);
