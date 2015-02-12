@@ -55,12 +55,14 @@
                     <h3> Bitcoin Ticker</h3>
                     <h5>{this.state.datetime}</h5>
                     <div className='row'>
-                        <div className='col-xs-3'>
-                            Current Price:&nbsp;
-                            <CurrencySymbolComponent currency={this.state.currency} />&nbsp;
-                            <PriceComponent price={this.state.price} reset={this.state.reset}/>
+                        <div className='col-md-3'>
+                            <h4>
+                                Current Price:&nbsp;
+                                <CurrencySymbolComponent currency={this.state.currency} />&nbsp;
+                                <PriceComponent price={this.state.price} reset={this.state.reset}/>
+                            </h4>
                         </div>
-                        <div className='col-xs-2'>
+                        <div className='col-md-2'>
                             <CurrencySelectionComponent value={this.state.currency} onSelection={this.loadPrice}/>
                         </div>
                     </div>
