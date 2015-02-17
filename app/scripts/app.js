@@ -3,9 +3,8 @@
     'use strict';
     var React = window.React = require('react'),
         Moment = require('moment'),
-        CurrencySymbolComponent = require('./ui/CurrencySymbolComponent'),
-        PriceComponent = require('./ui/PriceComponent'),
-        CurrencySelectionComponent = require('./ui/CurrencySelectionComponent'),
+        PriceView = require('./sections/PriceView'),
+        ChartView = require('./sections/ChartView'),
         mountNode = document.getElementById('app');
 
     var BitcoinTicker = React.createClass({
@@ -54,18 +53,14 @@
                 <div>
                     <h3> Bitcoin Ticker</h3>
                     <h5>{this.state.datetime}</h5>
-                    <div className='row'>
-                        <div className='col-md-3'>
-                            <h4>
-                                Current Price:&nbsp;
-                                <CurrencySymbolComponent currency={this.state.currency} />&nbsp;
-                                <PriceComponent price={this.state.price} reset={this.state.reset}/>
-                            </h4>
-                        </div>
-                        <div className='col-md-2'>
-                            <CurrencySelectionComponent value={this.state.currency} onSelection={this.loadPrice}/>
-                        </div>
-                    </div>
+                    <PriceView
+                        currency={this.state.currency}
+                        price={this.state.price}
+                        reset={this.state.reset}
+                        onSelection={this.loadPrice} />
+                    <ChartView
+                        price={this.state.price}
+                        reset={this.state.reset} />
                 </div>
             );
         }
