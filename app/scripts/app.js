@@ -20,7 +20,7 @@
         },
         getInitialState: function () {
             return {
-                datetime: new Moment().format('MM/D/YYYY'),
+                datetime: new Moment().format('MMMM Do YYYY'),
                 price: null,
                 reset: true
             };
@@ -51,16 +51,40 @@
         render: function () {
             return (
                 <div>
-                    <h3> Bitcoin Ticker</h3>
-                    <h5>{this.state.datetime}</h5>
-                    <PriceView
-                        currency={this.state.currency}
-                        price={this.state.price}
-                        reset={this.state.reset}
-                        onSelection={this.loadPrice} />
-                    <ChartView
-                        price={this.state.price}
-                        reset={this.state.reset} />
+                    <div className='row'>
+                        <div className='text-center'>
+                            <h4>{this.state.datetime}</h4>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-md-6'>
+                            <div className='panel panel-default'>
+                                <div className='panel-heading'>
+                                    <h3 className='panel-title'>Price</h3>
+                                </div>
+                                <div className='panel-body'>
+                                    <PriceView
+                                        currency={this.state.currency}
+                                        price={this.state.price}
+                                        reset={this.state.reset}
+                                        onSelection={this.loadPrice} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='col-md-6'>
+                            <div className='panel panel-default'>
+                                <div className='panel-heading'>
+                                    <h3 className='panel-title'>Chart</h3>
+                                </div>
+                                <div className='panel-body'>
+                                    <div id='chart' className='epoch category10'></div>
+                                    <ChartView
+                                        price={this.state.price}
+                                        reset={this.state.reset} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
         }

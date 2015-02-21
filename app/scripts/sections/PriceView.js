@@ -9,16 +9,15 @@
         render: function () {
             return (
                 <div className='row'>
-                    <div className='col-md-3'>
-                        <h4>
-                            Current Price:&nbsp;
+                    <div className='col-md-6'>
+                        <h3 className='margin-top-5'>
                             <CurrencySymbolComponent currency={this.props.currency} />&nbsp;
                             <PriceComponent
                                 price={this.props.price}
                                 reset={this.props.reset} />
-                        </h4>
+                        </h3>
                     </div>
-                    <div className='col-md-2'>
+                    <div className='col-md-6'>
                         <CurrencySelectionComponent
                             value={this.props.currency}
                             onSelection={this.props.onSelection} />

@@ -15,12 +15,12 @@
             };
         },
         componentWillReceiveProps: function (nextProps) {
-            var color = 'black';
+            var color = '#333333';
             if (this.state.price !== null && !nextProps.reset) {
                 if (nextProps.price > this.state.price) {
-                    color = 'green';
+                    color = '#3c763d';
                 } else if (nextProps.price < this.state.price) {
-                    color = 'red';
+                    color = '#a94442';
                 }
             }
             this.setState({

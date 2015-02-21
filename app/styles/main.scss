@@ -1,7 +1,15 @@
 $icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/";
 
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+@import "c3";
 
 .row {
     padding-top: 10px;
+}
+.margin-top-5 {
+    margin-top: 5px;
+}
+#chart {
+    height: 300px;
+    width: 100%;
 }

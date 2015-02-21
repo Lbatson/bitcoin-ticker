@@ -2,6 +2,7 @@
   "name": "bitcoin-ticker",
   "version": "0.0.0",
   "dependencies": {
+    "c3": "^0.4.9",
     "moment": "^2.9.0"
   },
   "devDependencies": {
