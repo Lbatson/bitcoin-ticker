@@ -1,8 +1,8 @@
 (function () {
     'use strict';
-    var React = require('react'),
-        CurrencySymbolComponent = require('../ui/CurrencySymbolComponent'),
-        PriceComponent = require('../ui/PriceComponent'),
+    var React                      = require('react'),
+        CurrencySymbolComponent    = require('../ui/CurrencySymbolComponent'),
+        PriceComponent             = require('../ui/PriceComponent'),
         CurrencySelectionComponent = require('../ui/CurrencySelectionComponent');
 
     var PriceView = React.createClass({

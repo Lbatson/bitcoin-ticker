@@ -4,10 +4,6 @@
     var React = require('react');
 
     var PriceComponent = React.createClass({
-        propTypes: {
-            price: React.PropTypes.number,
-            reset: React.PropTypes.bool
-        },
         getInitialState: function () {
             return {
                 price: null,

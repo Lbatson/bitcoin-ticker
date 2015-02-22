@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React = require('react'),
+    var React        = require('react'),
         currencyList = require('../data/CurrencySymbolList');
 
     var CurrencySelectionComponent = React.createClass({

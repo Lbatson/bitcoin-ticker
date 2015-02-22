@@ -3,27 +3,22 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React = window.React = require('react'),
-        Moment = require('moment'),
+    var React     = window.React = require('react'),
+        moment    = require('moment'),
         PriceView = require('./sections/PriceView'),
         ChartView = require('./sections/ChartView'),
         mountNode = document.getElementById('app');
 
     var BitcoinTicker = React.createClass({displayName: "BitcoinTicker",
-        propTypes: {
-            updateInterval: React.PropTypes.number,
-            currency: React.PropTypes.string
-        },
         getDefaultProps: function () {
             return {
-                updateInterval: 10000,
+                interval: 10000,
                 currency: 'USD'
             };
         },
         getInitialState: function () {
             return {
-                datetime: new Moment().format('MMMM Do YYYY'),
-                price: null,
+                datetime: moment().format('MMMM Do YYYY'),
                 reset: true
             };
         },
@@ -33,11 +28,13 @@
                 dataType: 'json'
             })
             .done(function (data) {
-                this.setState({
-                    currency: currency || this.state.currency,
-                    price: data,
-                    reset: !!currency || false
-                });
+                if (this.isMounted()) {
+                    this.setState({
+                        currency: currency || this.state.currency,
+                        price: data,
+                        reset: !!currency || false
+                    });
+                }
             }.bind(this))
             .fail(function (jqXHR, status, err) {
                 console.log(status, err);
@@ -45,7 +42,7 @@
         },
         componentDidMount: function () {
             this.loadPrice(this.props.currency);
-            this.updateInterval = setInterval(this.loadPrice, this.props.updateInterval);
+            this.updateInterval = setInterval(this.loadPrice, this.props.interval);
         },
         componentWillUnmount: function () {
             clearInterval(this.updateInterval);
@@ -66,7 +63,7 @@
                                 ), 
                                 React.createElement("div", {className: "panel-body"}, 
                                     React.createElement(PriceView, {
-                                        currency: this.state.currency, 
+                                        currency: this.state.currency || this.props.currency, 
                                         price: this.state.price, 
                                         reset: this.state.reset, 
                                         onSelection: this.loadPrice})
@@ -79,8 +76,8 @@
                                     React.createElement("h3", {className: "panel-title"}, "Chart")
                                 ), 
                                 React.createElement("div", {className: "panel-body"}, 
-                                    React.createElement("div", {id: "chart", className: "epoch category10"}), 
                                     React.createElement(ChartView, {
+                                        currency: this.state.currency || this.props.currency, 
                                         price: this.state.price, 
                                         reset: this.state.reset})
                                 )
@@ -92,7 +89,7 @@
         }
     });
 
-    React.render(React.createElement(BitcoinTicker, {updateInterval: 10000, currency: "USD"}), mountNode);
+    React.render(React.createElement(BitcoinTicker, {interval: 5000, currency: "USD"}), mountNode);
 })();
 
 
@@ -127,39 +124,58 @@ module.exports = {
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function () {
     'use strict';
-    var React = require('react'),
-        c3 = require('c3');
+    var React        = require('react'),
+        moment       = require('moment'),
+        c3           = require('c3'),
+        currencyList = require('../data/CurrencySymbolList');
 
     var ChartView = React.createClass({displayName: "ChartView",
-        chart: null,
+        getDefaultProps: function () {
+            return {
+                max: 20
+            };
+        },
         getInitialState: function () {
             return {
                 prices: this.props.price ? ['Price', this.props.price] : ['Price']
             };
         },
-        componentWillReceiveProps: function (nextProps) {
-            if (nextProps.price && !nextProps.reset) {
-                this.state.prices.push(nextProps.price);
-            } else if (nextProps.price) {
-                this.state.prices = ['Price', nextProps.price];
-            }
-            if (this.state.prices.length > 12) {
-                this.state.prices.splice(1, 1);
-            }
-            this.chart.load({
-                columns: [this.state.prices]
-            });
-        },
-        componentDidMount: function () {
+        generateChart: function () {
+            var currency = currencyList[this.state.currency];
             this.chart = c3.generate({
                 data: {
                     columns: [this.state.prices]
+                },
+                tooltip: {
+                    format: {
+                        value: function (value, ratio, id) {
+                            return currency + ' ' + value.toFixed(2);
+                        }
+                    }
                 }
             });
         },
+        componentWillReceiveProps: function (nextProps) {
+            if (nextProps.price && !nextProps.reset) {
+                this.state.prices.push(nextProps.price);
+                if (this.state.prices.length > this.props.max + 1) {
+                    this.state.prices.splice(1, 1);
+                }
+                this.chart.load({
+                    columns: [this.state.prices]
+                });
+            } else if (nextProps.price) {
+                this.state.currency = nextProps.currency;
+                this.state.prices = ['Price', nextProps.price];
+                this.generateChart();
+            }
+        },
+        componentDidMount: function () {
+            this.generateChart();
+        },
         render: function () {
             return (
-                React.createElement("div", null)
+                React.createElement("div", {id: "chart"})
             );
         }
     });
@@ -169,13 +185,13 @@ module.exports = {
 
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/sections/ChartView.js","/app/scripts/sections")
-},{"_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","c3":"/Users/Lance/Projects/bitcoin-ticker/node_modules/c3/c3.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/sections/PriceView.js":[function(require,module,exports){
+},{"../data/CurrencySymbolList":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","c3":"/Users/Lance/Projects/bitcoin-ticker/node_modules/c3/c3.js","moment":"/Users/Lance/Projects/bitcoin-ticker/node_modules/moment/moment.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/sections/PriceView.js":[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function () {
     'use strict';
-    var React = require('react'),
-        CurrencySymbolComponent = require('../ui/CurrencySymbolComponent'),
-        PriceComponent = require('../ui/PriceComponent'),
+    var React                      = require('react'),
+        CurrencySymbolComponent    = require('../ui/CurrencySymbolComponent'),
+        PriceComponent             = require('../ui/PriceComponent'),
         CurrencySelectionComponent = require('../ui/CurrencySelectionComponent');
 
     var PriceView = React.createClass({displayName: "PriceView",
@@ -210,7 +226,7 @@ module.exports = {
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React = require('react'),
+    var React        = require('react'),
         currencyList = require('../data/CurrencySymbolList');
 
     var CurrencySelectionComponent = React.createClass({displayName: "CurrencySelectionComponent",
@@ -237,13 +253,10 @@ module.exports = {
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React = require('react'),
+    var React        = require('react'),
         currencyList = require('../data/CurrencySymbolList');
 
     var CurrencySymbolComponent = React.createClass({displayName: "CurrencySymbolComponent",
-        propTypes: {
-            currency: React.PropTypes.string
-        },
         render: function () {
             return (
                 React.createElement("span", null, currencyList[this.props.currency])
@@ -264,10 +277,6 @@ module.exports = {
     var React = require('react');
 
     var PriceComponent = React.createClass({displayName: "PriceComponent",
-        propTypes: {
-            price: React.PropTypes.number,
-            reset: React.PropTypes.bool
-        },
         getInitialState: function () {
             return {
                 price: null,
