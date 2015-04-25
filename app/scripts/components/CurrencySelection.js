@@ -4,7 +4,7 @@
     var React        = require('react'),
         currencyList = require('../data/CurrencySymbolList');
 
-    var CurrencySelectionComponent = React.createClass({
+    var CurrencySelection = React.createClass({
         handleSelection: function (e) {
             this.props.onSelection(e.target.value);
         },
@@ -18,5 +18,5 @@
         }
     });
 
-    module.exports = CurrencySelectionComponent;
+    module.exports = CurrencySelection;
 })();

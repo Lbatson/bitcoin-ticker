@@ -1,24 +1,24 @@
 (function () {
     'use strict';
-    var React                      = require('react'),
-        CurrencySymbolComponent    = require('../ui/CurrencySymbolComponent'),
-        PriceComponent             = require('../ui/PriceComponent'),
-        CurrencySelectionComponent = require('../ui/CurrencySelectionComponent');
+    var React             = require('react'),
+        CurrencySymbol    = require('../components/CurrencySymbol'),
+        Price             = require('../components/Price'),
+        CurrencySelection = require('../components/CurrencySelection');
 
-    var PriceView = React.createClass({
+    var PriceSection = React.createClass({
         render: function () {
             return (
                 <div className='row'>
                     <div className='col-md-6'>
                         <h3 className='margin-top-5'>
-                            <CurrencySymbolComponent currency={this.props.currency} />&nbsp;
-                            <PriceComponent
+                            <CurrencySymbol currency={this.props.currency} />&nbsp;
+                            <Price
                                 price={this.props.price}
                                 reset={this.props.reset} />
                         </h3>
                     </div>
                     <div className='col-md-6'>
-                        <CurrencySelectionComponent
+                        <CurrencySelection
                             value={this.props.currency}
                             onSelection={this.props.onSelection} />
                     </div>
@@ -27,5 +27,5 @@
         }
     });
 
-    module.exports = PriceView;
+    module.exports = PriceSection;
 })();

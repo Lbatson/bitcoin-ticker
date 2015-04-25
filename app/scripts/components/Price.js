@@ -3,10 +3,10 @@
     'use strict';
     var React = require('react');
 
-    var PriceComponent = React.createClass({
+    var Price = React.createClass({
         getInitialState: function () {
             return {
-                price: null,
+                price: this.props.price,
                 style: {}
             };
         },
@@ -35,5 +35,5 @@
         }
     });
 
-    module.exports = PriceComponent;
+    module.exports = Price;
 })();

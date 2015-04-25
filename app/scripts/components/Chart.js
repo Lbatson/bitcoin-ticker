@@ -5,7 +5,7 @@
         c3           = require('c3'),
         currencyList = require('../data/CurrencySymbolList');
 
-    var ChartView = React.createClass({
+    var Chart = React.createClass({
         getDefaultProps: function () {
             return {
                 max: 20
@@ -56,5 +56,5 @@
         }
     });
 
-    module.exports = ChartView;
+    module.exports = Chart;
 })();

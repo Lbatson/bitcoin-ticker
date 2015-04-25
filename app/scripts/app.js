@@ -1,11 +1,12 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React     = window.React = require('react'),
-        moment    = require('moment'),
-        PriceView = require('./sections/PriceView'),
-        ChartView = require('./sections/ChartView'),
-        mountNode = document.getElementById('app');
+    var React        = window.React = require('react'),
+        moment       = require('moment'),
+        PriceSection = require('./sections/PriceSection'),
+        PriceList    = require('./components/PriceList'),
+        Chart        = require('./components/Chart'),
+        mountNode    = document.getElementById('app');
 
     var BitcoinTicker = React.createClass({
         getDefaultProps: function () {
@@ -60,11 +61,22 @@
                                     <h3 className='panel-title'>Price</h3>
                                 </div>
                                 <div className='panel-body'>
-                                    <PriceView
+                                    <PriceSection
                                         currency={this.state.currency || this.props.currency}
                                         price={this.state.price}
                                         reset={this.state.reset}
                                         onSelection={this.loadPrice} />
+                                </div>
+                            </div>
+                            <div className='panel panel-default'>
+                                <div className='panel-heading'>
+                                    <h3 className='panel-title'>List</h3>
+                                </div>
+                                <div className='panel-body'>
+                                    <PriceList
+                                        currency={this.state.currency || this.props.currency}
+                                        price={this.state.price}
+                                        reset={this.state.reset} />
                                 </div>
                             </div>
                         </div>
@@ -74,7 +86,7 @@
                                     <h3 className='panel-title'>Chart</h3>
                                 </div>
                                 <div className='panel-body'>
-                                    <ChartView
+                                    <Chart
                                         currency={this.state.currency || this.props.currency}
                                         price={this.state.price}
                                         reset={this.state.reset} />
