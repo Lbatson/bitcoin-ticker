@@ -3,11 +3,12 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React     = window.React = require('react'),
-        moment    = require('moment'),
-        PriceView = require('./sections/PriceView'),
-        ChartView = require('./sections/ChartView'),
-        mountNode = document.getElementById('app');
+    var React        = window.React = require('react'),
+        moment       = require('moment'),
+        PriceSection = require('./sections/PriceSection'),
+        PriceList    = require('./components/PriceList'),
+        Chart        = require('./components/Chart'),
+        mountNode    = document.getElementById('app');
 
     var BitcoinTicker = React.createClass({displayName: "BitcoinTicker",
         getDefaultProps: function () {
@@ -62,11 +63,22 @@
                                     React.createElement("h3", {className: "panel-title"}, "Price")
                                 ), 
                                 React.createElement("div", {className: "panel-body"}, 
-                                    React.createElement(PriceView, {
+                                    React.createElement(PriceSection, {
                                         currency: this.state.currency || this.props.currency, 
                                         price: this.state.price, 
                                         reset: this.state.reset, 
                                         onSelection: this.loadPrice})
+                                )
+                            ), 
+                            React.createElement("div", {className: "panel panel-default"}, 
+                                React.createElement("div", {className: "panel-heading"}, 
+                                    React.createElement("h3", {className: "panel-title"}, "List")
+                                ), 
+                                React.createElement("div", {className: "panel-body"}, 
+                                    React.createElement(PriceList, {
+                                        currency: this.state.currency || this.props.currency, 
+                                        price: this.state.price, 
+                                        reset: this.state.reset})
                                 )
                             )
                         ), 
@@ -76,7 +88,7 @@
                                     React.createElement("h3", {className: "panel-title"}, "Chart")
                                 ), 
                                 React.createElement("div", {className: "panel-body"}, 
-                                    React.createElement(ChartView, {
+                                    React.createElement(Chart, {
                                         currency: this.state.currency || this.props.currency, 
                                         price: this.state.price, 
                                         reset: this.state.reset})
@@ -94,33 +106,7 @@
 
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/app.js","/app/scripts")
-},{"./sections/ChartView":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/sections/ChartView.js","./sections/PriceView":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/sections/PriceView.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","moment":"/Users/Lance/Projects/bitcoin-ticker/node_modules/moment/moment.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js":[function(require,module,exports){
-(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-module.exports = {
-    'AUD': '\u0024',
-    'BRL': '\u0052\u0024',
-    'CAD': '\u0024',
-    'CHF': '\u0043\u0048\u0046',
-    'CNY': '\u00a5',
-    'EUR': '\u20ac',
-    'GBP': '\u00a3',
-    'HKD': '\u0024',
-    'ILS': '\u20aa',
-    'JPY': '\u00a5',
-    'NOK': '\u006b\u0072',
-    'NZD': '\u0024',
-    'PLN': '\u007a\u0142',
-    'RUB': '\u0440\u0443\u0431',
-    'SEK': '\u006b\u0072',
-    'SGD': '\u0024',
-    'TRY': '\u20ba',
-    'USD': '\u0024',
-    'ZAR': '\u0052'
-};
-
-
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/data/CurrencySymbolList.js","/app/scripts/data")
-},{"_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/sections/ChartView.js":[function(require,module,exports){
+},{"./components/Chart":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/Chart.js","./components/PriceList":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/PriceList.js","./sections/PriceSection":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/sections/PriceSection.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","moment":"/Users/Lance/Projects/bitcoin-ticker/node_modules/moment/moment.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/Chart.js":[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function () {
     'use strict';
@@ -129,7 +115,7 @@ module.exports = {
         c3           = require('c3'),
         currencyList = require('../data/CurrencySymbolList');
 
-    var ChartView = React.createClass({displayName: "ChartView",
+    var Chart = React.createClass({displayName: "Chart",
         getDefaultProps: function () {
             return {
                 max: 20
@@ -180,48 +166,12 @@ module.exports = {
         }
     });
 
-    module.exports = ChartView;
+    module.exports = Chart;
 })();
 
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/sections/ChartView.js","/app/scripts/sections")
-},{"../data/CurrencySymbolList":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","c3":"/Users/Lance/Projects/bitcoin-ticker/node_modules/c3/c3.js","moment":"/Users/Lance/Projects/bitcoin-ticker/node_modules/moment/moment.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/sections/PriceView.js":[function(require,module,exports){
-(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-(function () {
-    'use strict';
-    var React                      = require('react'),
-        CurrencySymbolComponent    = require('../ui/CurrencySymbolComponent'),
-        PriceComponent             = require('../ui/PriceComponent'),
-        CurrencySelectionComponent = require('../ui/CurrencySelectionComponent');
-
-    var PriceView = React.createClass({displayName: "PriceView",
-        render: function () {
-            return (
-                React.createElement("div", {className: "row"}, 
-                    React.createElement("div", {className: "col-md-6"}, 
-                        React.createElement("h3", {className: "margin-top-5"}, 
-                            React.createElement(CurrencySymbolComponent, {currency: this.props.currency}), " ", 
-                            React.createElement(PriceComponent, {
-                                price: this.props.price, 
-                                reset: this.props.reset})
-                        )
-                    ), 
-                    React.createElement("div", {className: "col-md-6"}, 
-                        React.createElement(CurrencySelectionComponent, {
-                            value: this.props.currency, 
-                            onSelection: this.props.onSelection})
-                    )
-                )
-            );
-        }
-    });
-
-    module.exports = PriceView;
-})();
-
-
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/sections/PriceView.js","/app/scripts/sections")
-},{"../ui/CurrencySelectionComponent":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/ui/CurrencySelectionComponent.js","../ui/CurrencySymbolComponent":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/ui/CurrencySymbolComponent.js","../ui/PriceComponent":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/ui/PriceComponent.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/ui/CurrencySelectionComponent.js":[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/components/Chart.js","/app/scripts/components")
+},{"../data/CurrencySymbolList":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","c3":"/Users/Lance/Projects/bitcoin-ticker/node_modules/c3/c3.js","moment":"/Users/Lance/Projects/bitcoin-ticker/node_modules/moment/moment.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/CurrencySelection.js":[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /** @jsx React.DOM */
 (function () {
@@ -229,7 +179,7 @@ module.exports = {
     var React        = require('react'),
         currencyList = require('../data/CurrencySymbolList');
 
-    var CurrencySelectionComponent = React.createClass({displayName: "CurrencySelectionComponent",
+    var CurrencySelection = React.createClass({displayName: "CurrencySelection",
         handleSelection: function (e) {
             this.props.onSelection(e.target.value);
         },
@@ -243,12 +193,12 @@ module.exports = {
         }
     });
 
-    module.exports = CurrencySelectionComponent;
+    module.exports = CurrencySelection;
 })();
 
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/ui/CurrencySelectionComponent.js","/app/scripts/ui")
-},{"../data/CurrencySymbolList":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/ui/CurrencySymbolComponent.js":[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/components/CurrencySelection.js","/app/scripts/components")
+},{"../data/CurrencySymbolList":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/CurrencySymbol.js":[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /** @jsx React.DOM */
 (function () {
@@ -256,7 +206,7 @@ module.exports = {
     var React        = require('react'),
         currencyList = require('../data/CurrencySymbolList');
 
-    var CurrencySymbolComponent = React.createClass({displayName: "CurrencySymbolComponent",
+    var CurrencySymbol = React.createClass({displayName: "CurrencySymbol",
         render: function () {
             return (
                 React.createElement("span", null, currencyList[this.props.currency])
@@ -264,22 +214,22 @@ module.exports = {
         }
     });
 
-    module.exports = CurrencySymbolComponent;
+    module.exports = CurrencySymbol;
 })();
 
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/ui/CurrencySymbolComponent.js","/app/scripts/ui")
-},{"../data/CurrencySymbolList":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/ui/PriceComponent.js":[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/components/CurrencySymbol.js","/app/scripts/components")
+},{"../data/CurrencySymbolList":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/Price.js":[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /** @jsx React.DOM */
 (function () {
     'use strict';
     var React = require('react');
 
-    var PriceComponent = React.createClass({displayName: "PriceComponent",
+    var Price = React.createClass({displayName: "Price",
         getInitialState: function () {
             return {
-                price: null,
+                price: this.props.price,
                 style: {}
             };
         },
@@ -308,12 +258,136 @@ module.exports = {
         }
     });
 
-    module.exports = PriceComponent;
+    module.exports = Price;
 })();
 
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/ui/PriceComponent.js","/app/scripts/ui")
-},{"_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js":[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/components/Price.js","/app/scripts/components")
+},{"_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/PriceList.js":[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+/** @jsx React.DOM */
+(function () {
+    'use strict';
+    var CurrencySymbol = require('../components/CurrencySymbol'),
+        Price          = require('../components/Price');
+
+    var PriceRow = React.createClass({displayName: "PriceRow",
+        render: function () {
+            return (
+                React.createElement("li", {className: "list-group-item"}, 
+                    React.createElement(CurrencySymbol, {currency: this.props.currency}), " ", 
+                    React.createElement(Price, {
+                        price: this.props.price, 
+                        reset: this.props.reset}), 
+                    React.createElement("span", {className: "pull-right"}, "Change Indicator")
+                )
+            );
+        }
+    });
+
+    var PriceList = React.createClass({displayName: "PriceList",
+        getDefaultProps: function () {
+            return {
+                max: 20
+            };
+        },
+        getInitialState: function () {
+            return {
+                prices: this.props.price ? [this.props.price] : []
+            };
+        },
+        componentWillReceiveProps: function (nextProps) {
+            if (nextProps.price && !nextProps.reset) {
+                this.state.prices.push(nextProps.price);
+                if (this.state.prices.length > this.props.max + 1) {
+                    this.state.prices.splice(1, 1);
+                }
+            } else if (nextProps.price) {
+                this.state.currency = nextProps.currency;
+                this.state.prices = [nextProps.price];
+            }
+        },
+        render: function () {
+            var prices = this.state.prices.map(function (price) {
+                return React.createElement(PriceRow, {
+                    currency: this.props.currency, 
+                    price: price, 
+                    reset: this.props.reset});
+            }.bind(this));
+            return (
+                React.createElement("ul", {className: "list-group"}, prices)
+            );
+        }
+    });
+
+    module.exports = PriceList;
+})();
+
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/components/PriceList.js","/app/scripts/components")
+},{"../components/CurrencySymbol":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/CurrencySymbol.js","../components/Price":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/Price.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/data/CurrencySymbolList.js":[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+module.exports = {
+    'AUD': '\u0024',
+    'BRL': '\u0052\u0024',
+    'CAD': '\u0024',
+    'CHF': '\u0043\u0048\u0046',
+    'CNY': '\u00a5',
+    'EUR': '\u20ac',
+    'GBP': '\u00a3',
+    'HKD': '\u0024',
+    'ILS': '\u20aa',
+    'JPY': '\u00a5',
+    'NOK': '\u006b\u0072',
+    'NZD': '\u0024',
+    'PLN': '\u007a\u0142',
+    'RUB': '\u0440\u0443\u0431',
+    'SEK': '\u006b\u0072',
+    'SGD': '\u0024',
+    'TRY': '\u20ba',
+    'USD': '\u0024',
+    'ZAR': '\u0052'
+};
+
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/data/CurrencySymbolList.js","/app/scripts/data")
+},{"_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/sections/PriceSection.js":[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+(function () {
+    'use strict';
+    var React             = require('react'),
+        CurrencySymbol    = require('../components/CurrencySymbol'),
+        Price             = require('../components/Price'),
+        CurrencySelection = require('../components/CurrencySelection');
+
+    var PriceSection = React.createClass({displayName: "PriceSection",
+        render: function () {
+            return (
+                React.createElement("div", {className: "row"}, 
+                    React.createElement("div", {className: "col-md-6"}, 
+                        React.createElement("h3", {className: "margin-top-5"}, 
+                            React.createElement(CurrencySymbol, {currency: this.props.currency}), " ", 
+                            React.createElement(Price, {
+                                price: this.props.price, 
+                                reset: this.props.reset})
+                        )
+                    ), 
+                    React.createElement("div", {className: "col-md-6"}, 
+                        React.createElement(CurrencySelection, {
+                            value: this.props.currency, 
+                            onSelection: this.props.onSelection})
+                    )
+                )
+            );
+        }
+    });
+
+    module.exports = PriceSection;
+})();
+
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/sections/PriceSection.js","/app/scripts/sections")
+},{"../components/CurrencySelection":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/CurrencySelection.js","../components/CurrencySymbol":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/CurrencySymbol.js","../components/Price":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/Price.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js","react":"/Users/Lance/Projects/bitcoin-ticker/node_modules/react/react.js"}],"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js":[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * The buffer module from node.js, for the browser.
