@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React        = window.React = require('react'),
+    var React        = window.React = require('react/addons'),
         moment       = require('moment'),
         PriceSection = require('./sections/PriceSection'),
         PriceList    = require('./components/PriceList'),
@@ -68,7 +68,7 @@
                                         onSelection={this.loadPrice} />
                                 </div>
                             </div>
-                            <div className='panel panel-default'>
+                            <div className='panel panel-default price-list-container'>
                                 <div className='panel-heading'>
                                     <h3 className='panel-title'>List</h3>
                                 </div>

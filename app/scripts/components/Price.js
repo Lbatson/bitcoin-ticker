@@ -1,9 +1,10 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React = require('react');
+    var Color = require('../mixins/Color');
 
     var Price = React.createClass({
+        mixins: [Color],
         getInitialState: function () {
             return {
                 price: this.props.price,
@@ -11,20 +12,7 @@
             };
         },
         componentWillReceiveProps: function (nextProps) {
-            var color = '#333333';
-            if (this.state.price !== null && !nextProps.reset) {
-                if (nextProps.price > this.state.price) {
-                    color = '#3c763d';
-                } else if (nextProps.price < this.state.price) {
-                    color = '#a94442';
-                }
-            }
-            this.setState({
-                price: nextProps.price,
-                style: {
-                    color: color
-                }
-            });
+            this.setState({price: nextProps.price});
         },
         render: function () {
             return (

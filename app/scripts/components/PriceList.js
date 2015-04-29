@@ -1,8 +1,9 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var CurrencySymbol = require('../components/CurrencySymbol'),
-        Price          = require('../components/Price');
+    var CurrencySymbol  = require('../components/CurrencySymbol'),
+        Price           = require('../components/Price'),
+        ChangeIndicator = require('../components/ChangeIndicator');
 
     var PriceRow = React.createClass({
         render: function () {
@@ -12,7 +13,7 @@
                     <Price
                         price={this.props.price}
                         reset={this.props.reset} />
-                    <span className="pull-right">Change Indicator</span>
+                    <ChangeIndicator price={this.props.price} />
                 </li>
             );
         }
@@ -21,7 +22,7 @@
     var PriceList = React.createClass({
         getDefaultProps: function () {
             return {
-                max: 20
+                max: 5
             };
         },
         getInitialState: function () {
@@ -32,8 +33,8 @@
         componentWillReceiveProps: function (nextProps) {
             if (nextProps.price && !nextProps.reset) {
                 this.state.prices.push(nextProps.price);
-                if (this.state.prices.length > this.props.max + 1) {
-                    this.state.prices.splice(1, 1);
+                if (this.state.prices.length > this.props.max) {
+                    this.state.prices.splice(0, 1);
                 }
             } else if (nextProps.price) {
                 this.state.currency = nextProps.currency;
@@ -47,6 +48,7 @@
                     price={price}
                     reset={this.props.reset} />;
             }.bind(this));
+            prices.reverse();
             return (
                 <ul className="list-group">{prices}</ul>
             );
