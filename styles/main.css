@@ -7232,6 +7232,10 @@ button.close {
   margin-top: 5px;
 }
 
+.price-list-container {
+  height: 290px;
+}
+
 #chart {
   height: 300px;
   width: 100%;
