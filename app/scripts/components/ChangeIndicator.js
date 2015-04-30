@@ -10,10 +10,7 @@
         },
         mixins: [Color],
         getInitialState: function () {
-            var state = this._getIndicatorState();
-            state.price = this.props.price;
-            state.style = {};
-            return state;
+            return this._getIndicatorState();
         },
         componentWillReceiveProps: function (nextProps) {
             this.setState(this._getIndicatorState(nextProps));
@@ -47,7 +44,7 @@
                 'fa-arrow-down': this.state.decreased
             })
             return (
-                <i className={classes} style={this.state.style}></i>
+                <i className={classes} style={this.state.colorMixin}></i>
             );
         }
     });

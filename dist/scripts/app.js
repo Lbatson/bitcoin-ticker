@@ -93,10 +93,7 @@
         },
         mixins: [Color],
         getInitialState: function () {
-            var state = this._getIndicatorState();
-            state.price = this.props.price;
-            state.style = {};
-            return state;
+            return this._getIndicatorState();
         },
         componentWillReceiveProps: function (nextProps) {
             this.setState(this._getIndicatorState(nextProps));
@@ -130,7 +127,7 @@
                 'fa-arrow-down': this.state.decreased
             })
             return (
-                React.createElement("i", {className: classes, style: this.state.style})
+                React.createElement("i", {className: classes, style: this.state.colorMixin})
             );
         }
     });
@@ -275,14 +272,9 @@
             price: React.PropTypes.number,
         },
         mixins: [Color],
-        getInitialState: function () {
-            return {
-                style: {}
-            };
-        },
         render: function () {
             return (
-                React.createElement("span", {style: this.state.style}, 
+                React.createElement("span", {style: this.state.colorMixin}, 
                     this.props.price ? this.props.price.toFixed(2) : 'Loading...'
                 )
             );
@@ -402,6 +394,11 @@ module.exports = {
 (function () {
     'use strict';
     var Color = {
+        getInitialState: function () {
+            return {
+                colorMixin: {}
+            };
+        },
         componentWillReceiveProps: function (nextProps) {
             var color = '#333333';
             if (this.props.price !== null && nextProps && !nextProps.reset) {
@@ -412,7 +409,7 @@ module.exports = {
                 }
             }
             this.setState({
-                style: {
+                colorMixin: {
                     color: color
                 }
             });

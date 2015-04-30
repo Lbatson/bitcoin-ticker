@@ -1,6 +1,11 @@
 (function () {
     'use strict';
     var Color = {
+        getInitialState: function () {
+            return {
+                colorMixin: {}
+            };
+        },
         componentWillReceiveProps: function (nextProps) {
             var color = '#333333';
             if (this.props.price !== null && nextProps && !nextProps.reset) {
@@ -11,7 +16,7 @@
                 }
             }
             this.setState({
-                style: {
+                colorMixin: {
                     color: color
                 }
             });

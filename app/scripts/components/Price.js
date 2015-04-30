@@ -8,14 +8,9 @@
             price: React.PropTypes.number,
         },
         mixins: [Color],
-        getInitialState: function () {
-            return {
-                style: {}
-            };
-        },
         render: function () {
             return (
-                <span style={this.state.style}>
+                <span style={this.state.colorMixin}>
                     {this.props.price ? this.props.price.toFixed(2) : 'Loading...'}
                 </span>
             );
