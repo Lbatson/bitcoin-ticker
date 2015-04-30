@@ -1,11 +1,16 @@
 (function () {
     'use strict';
-    var React        = require('react'),
-        moment       = require('moment'),
+    var moment       = require('moment'),
         c3           = require('c3'),
         currencyList = require('../data/CurrencySymbolList');
 
     var Chart = React.createClass({
+        propTypes: {
+            currency: React.PropTypes.string,
+            max: React.PropTypes.number,
+            price: React.PropTypes.number,
+            reset: React.PropTypes.bool
+        },
         getDefaultProps: function () {
             return {
                 max: 20
@@ -16,20 +21,8 @@
                 prices: this.props.price ? ['Price', this.props.price] : ['Price']
             };
         },
-        generateChart: function () {
-            var currency = currencyList[this.state.currency];
-            this.chart = c3.generate({
-                data: {
-                    columns: [this.state.prices]
-                },
-                tooltip: {
-                    format: {
-                        value: function (value, ratio, id) {
-                            return currency + ' ' + value.toFixed(2);
-                        }
-                    }
-                }
-            });
+        componentDidMount: function () {
+            this._generateChart();
         },
         componentWillReceiveProps: function (nextProps) {
             if (nextProps.price && !nextProps.reset) {
@@ -43,11 +36,23 @@
             } else if (nextProps.price) {
                 this.state.currency = nextProps.currency;
                 this.state.prices = ['Price', nextProps.price];
-                this.generateChart();
+                this._generateChart();
             }
         },
-        componentDidMount: function () {
-            this.generateChart();
+        _generateChart: function () {
+            var currency = currencyList[this.state.currency];
+            this.chart = c3.generate({
+                data: {
+                    columns: [this.state.prices]
+                },
+                tooltip: {
+                    format: {
+                        value: function (value, ratio, id) {
+                            return currency + ' ' + value.toFixed(2);
+                        }
+                    }
+                }
+            });
         },
         render: function () {
             return (

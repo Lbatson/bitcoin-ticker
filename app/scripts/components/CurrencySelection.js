@@ -1,11 +1,14 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React        = require('react'),
-        currencyList = require('../data/CurrencySymbolList');
+    var currencyList = require('../data/CurrencySymbolList');
 
     var CurrencySelection = React.createClass({
-        handleSelection: function (e) {
+        propTypes: {
+            onSelection: React.PropTypes.func,
+            value: React.PropTypes.string
+        },
+        _handleSelection: function (e) {
             this.props.onSelection(e.target.value);
         },
         render: function () {
@@ -13,7 +16,7 @@
                 return <option key={key} value={key}>{key}</option>;
             });
             return (
-                <select className='form-control' value={this.props.value} onChange={this.handleSelection}>{options}</select>
+                <select className='form-control' value={this.props.value} onChange={this._handleSelection}>{options}</select>
             );
         }
     });

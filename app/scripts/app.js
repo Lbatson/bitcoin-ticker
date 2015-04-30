@@ -1,14 +1,18 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React        = window.React = require('react/addons'),
-        moment       = require('moment'),
-        PriceSection = require('./sections/PriceSection'),
-        PriceList    = require('./components/PriceList'),
-        Chart        = require('./components/Chart'),
-        mountNode    = document.getElementById('app');
+    var React      = window.React = require('react/addons'),
+        moment     = require('moment'),
+        PricePanel = require('./panels/PricePanel'),
+        ListPanel  = require('./panels/ListPanel'),
+        ChartPanel = require('./panels/ChartPanel'),
+        mountNode  = document.getElementById('app');
 
     var BitcoinTicker = React.createClass({
+        propTypes: {
+            interval: React.PropTypes.number,
+            currency: React.PropTypes.string
+        },
         getDefaultProps: function () {
             return {
                 interval: 10000,
@@ -21,7 +25,14 @@
                 reset: true
             };
         },
-        loadPrice: function (currency) {
+        componentDidMount: function () {
+            this._loadPrice(this.props.currency);
+            this.updateInterval = setInterval(this._loadPrice, this.props.interval);
+        },
+        componentWillUnmount: function () {
+            clearInterval(this.updateInterval);
+        },
+        _loadPrice: function (currency) {
             $.ajax({
                 url: 'https://api.bitcoinaverage.com/ticker/' + (currency || this.state.currency) + '/last',
                 dataType: 'json'
@@ -39,13 +50,6 @@
                 console.log(status, err);
             });
         },
-        componentDidMount: function () {
-            this.loadPrice(this.props.currency);
-            this.updateInterval = setInterval(this.loadPrice, this.props.interval);
-        },
-        componentWillUnmount: function () {
-            clearInterval(this.updateInterval);
-        },
         render: function () {
             return (
                 <div>
@@ -56,42 +60,11 @@
                     </div>
                     <div className='row'>
                         <div className='col-md-6'>
-                            <div className='panel panel-default'>
-                                <div className='panel-heading'>
-                                    <h3 className='panel-title'>Price</h3>
-                                </div>
-                                <div className='panel-body'>
-                                    <PriceSection
-                                        currency={this.state.currency || this.props.currency}
-                                        price={this.state.price}
-                                        reset={this.state.reset}
-                                        onSelection={this.loadPrice} />
-                                </div>
-                            </div>
-                            <div className='panel panel-default price-list-container'>
-                                <div className='panel-heading'>
-                                    <h3 className='panel-title'>List</h3>
-                                </div>
-                                <div className='panel-body'>
-                                    <PriceList
-                                        currency={this.state.currency || this.props.currency}
-                                        price={this.state.price}
-                                        reset={this.state.reset} />
-                                </div>
-                            </div>
+                            <PricePanel {...this.state} onSelection={this._loadPrice} />
+                            <ListPanel {...this.state} />
                         </div>
                         <div className='col-md-6'>
-                            <div className='panel panel-default'>
-                                <div className='panel-heading'>
-                                    <h3 className='panel-title'>Chart</h3>
-                                </div>
-                                <div className='panel-body'>
-                                    <Chart
-                                        currency={this.state.currency || this.props.currency}
-                                        price={this.state.price}
-                                        reset={this.state.reset} />
-                                </div>
-                            </div>
+                            <ChartPanel {...this.state} />
                         </div>
                     </div>
                 </div>

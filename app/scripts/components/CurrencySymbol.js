@@ -1,10 +1,12 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
-    var React        = require('react'),
-        currencyList = require('../data/CurrencySymbolList');
+    var currencyList = require('../data/CurrencySymbolList');
 
     var CurrencySymbol = React.createClass({
+        propTypes: {
+            currency: React.PropTypes.string
+        },
         render: function () {
             return (
                 <span>{currencyList[this.props.currency]}</span>

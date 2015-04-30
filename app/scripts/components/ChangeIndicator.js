@@ -4,8 +4,21 @@
     var Color = require('../mixins/Color');
 
     var ChangeIndicator = React.createClass({
+        propTypes: {
+            price: React.PropTypes.number,
+            reset: React.PropTypes.bool
+        },
         mixins: [Color],
-        getIndicatorState: function (nextProps) {
+        getInitialState: function () {
+            var state = this._getIndicatorState();
+            state.price = this.props.price;
+            state.style = {};
+            return state;
+        },
+        componentWillReceiveProps: function (nextProps) {
+            this.setState(this._getIndicatorState(nextProps));
+        },
+        _getIndicatorState: function (nextProps) {
             var state = {
                 unchanged: true,
                 increased: false,
@@ -23,15 +36,6 @@
                 }
             }
             return state;
-        },
-        getInitialState: function () {
-            var state = this.getIndicatorState();
-            state.price = this.props.price;
-            state.style = {};
-            return state;
-        },
-        componentWillReceiveProps: function (nextProps) {
-            this.setState(this.getIndicatorState(nextProps));
         },
         render: function () {
             var classes = React.addons.classSet({

@@ -4,6 +4,9 @@
     var Color = require('../mixins/Color');
 
     var Price = React.createClass({
+        propTypes: {
+            price: React.PropTypes.number,
+        },
         mixins: [Color],
         getInitialState: function () {
             return {

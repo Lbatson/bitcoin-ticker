@@ -6,6 +6,11 @@
         ChangeIndicator = require('../components/ChangeIndicator');
 
     var PriceRow = React.createClass({
+        propTypes: {
+            currency: React.PropTypes.string,
+            price: React.PropTypes.number,
+            reset: React.PropTypes.bool
+        },
         render: function () {
             return (
                 <li className="list-group-item">
@@ -22,6 +27,12 @@
     });
 
     var PriceList = React.createClass({
+        propTypes: {
+            currency: React.PropTypes.string,
+            max: React.PropTypes.number,
+            price: React.PropTypes.number,
+            reset: React.PropTypes.bool
+        },
         getDefaultProps: function () {
             return {
                 max: 5
@@ -46,9 +57,9 @@
         render: function () {
             var prices = this.state.prices.map(function (price) {
                 return <PriceRow
-                    currency={this.props.currency}
-                    price={price}
-                    reset={this.props.reset} />;
+                            currency={this.props.currency}
+                            price={price}
+                            reset={this.props.reset} />;
             }.bind(this));
             prices.reverse();
             return (
