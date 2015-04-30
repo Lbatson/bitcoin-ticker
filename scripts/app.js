@@ -111,7 +111,10 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
+    var Color = require('../mixins/Color');
+
     var ChangeIndicator = React.createClass({displayName: "ChangeIndicator",
+        mixins: [Color],
         getIndicatorState: function (nextProps) {
             var state = {
                 unchanged: true,
@@ -160,7 +163,7 @@
 
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/components/ChangeIndicator.js","/app/scripts/components")
-},{"_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/Chart.js":[function(require,module,exports){
+},{"../mixins/Color":"/Users/Lance/Projects/bitcoin-ticker/app/scripts/mixins/Color.js","_process":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/process/browser.js","buffer":"/Users/Lance/Projects/bitcoin-ticker/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/Lance/Projects/bitcoin-ticker/app/scripts/components/Chart.js":[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function () {
     'use strict';
@@ -284,17 +287,13 @@
         mixins: [Color],
         getInitialState: function () {
             return {
-                price: this.props.price,
                 style: {}
             };
-        },
-        componentWillReceiveProps: function (nextProps) {
-            this.setState({price: nextProps.price});
         },
         render: function () {
             return (
                 React.createElement("span", {style: this.state.style}, 
-                    this.state.price ? this.state.price.toFixed(2) : 'Loading...'
+                    this.props.price ? this.props.price.toFixed(2) : 'Loading...'
                 )
             );
         }
@@ -322,7 +321,9 @@
                     React.createElement(Price, {
                         price: this.props.price, 
                         reset: this.props.reset}), 
-                    React.createElement(ChangeIndicator, {price: this.props.price})
+                    React.createElement(ChangeIndicator, {
+                        price: this.props.price, 
+                        reset: this.props.reset})
                 )
             );
         }
