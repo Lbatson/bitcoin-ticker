@@ -13,7 +13,9 @@
                     <Price
                         price={this.props.price}
                         reset={this.props.reset} />
-                    <ChangeIndicator price={this.props.price} />
+                    <ChangeIndicator
+                        price={this.props.price}
+                        reset={this.props.reset} />
                 </li>
             );
         }

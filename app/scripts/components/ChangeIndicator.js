@@ -1,7 +1,10 @@
 /** @jsx React.DOM */
 (function () {
     'use strict';
+    var Color = require('../mixins/Color');
+
     var ChangeIndicator = React.createClass({
+        mixins: [Color],
         getIndicatorState: function (nextProps) {
             var state = {
                 unchanged: true,

@@ -7,17 +7,13 @@
         mixins: [Color],
         getInitialState: function () {
             return {
-                price: this.props.price,
                 style: {}
             };
-        },
-        componentWillReceiveProps: function (nextProps) {
-            this.setState({price: nextProps.price});
         },
         render: function () {
             return (
                 <span style={this.state.style}>
-                    {this.state.price ? this.state.price.toFixed(2) : 'Loading...'}
+                    {this.props.price ? this.props.price.toFixed(2) : 'Loading...'}
                 </span>
             );
         }
